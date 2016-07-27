@@ -79,6 +79,9 @@ function quickSort(arr,left,right) {
 	var j = right;
 	var base = arr[left];
 
+	if(left>right)
+		return ;
+
 	while(i<j) {
 		while (j>i && arr[j]>=base) 
 		   j--;
@@ -98,7 +101,7 @@ function quickSort(arr,left,right) {
 	arr[left] = temp2;
 
 	 quickSort(arr,left,i-1);
-	quickSort(arr,i+1,right);
+	 quickSort(arr,i+1,right);
 }
 
 //用于调试
