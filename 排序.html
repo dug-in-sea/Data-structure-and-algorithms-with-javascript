@@ -104,7 +104,84 @@ function quickSort(arr,left,right) {
 	 quickSort(arr,i+1,right);
 }
 
+
+
+// 希尔排序
+// 希尔排序其实使插入排序的升级版,相当于通过确定gap分组,在每组内进行插入排序
+function shellSort(arr){
+	var n = arr.length;
+	var i,gap;
+	for(gap = Math.floor(n/200); gap>0; Math.floor(gap /=200)) {
+		for(i =gap; i<n; i++){
+			var j = i;
+			var temp = arr[i];
+			while(j>0 && temp < arr[j-gap]){
+				arr[j] = arr[j-gap];
+				j -= gap;
+			}
+			arr[j] = temp;
+		}
+	}
+}
+
+
+//归并排序
+//归并排序的思想是将两个有序数组合并
+function mergeSort(arr,left,right){
+	if(left<right){
+		var mid = Math.floor((left+right)/2);
+		mergeSort(arr,left,mid);
+		mergeSort(arr,mid+1,right);
+		mergeArray(arr,left,mid,right);
+		
+	}
+
+}
+
+function mergeArray(arr,left,mid,right){
+	var i = left, m = mid;
+	var j = mid+1, n = right;
+	var k=0;
+	var tempArr = [];
+
+	while(i<=m && j<=n)
+	{
+		if(arr[i] <= arr[j])
+			tempArr[k++] = arr[i++];
+		else 
+			tempArr[k++] = arr[j++];
+	}
+		while(i<=m)
+			tempArr[k++] = arr[i++];
+		while(j<=n)
+			tempArr[k++] = arr[j++];
+		
+		
+		for(var i=0; i<k; i++){
+			arr[left+i] = tempArr[i];
+		}
+}
+
+
+
+
+
+
+
+
+
+
+
+
 //用于调试
+
+
+/**
+ * generate a array cosistis of certen account of members, which are randomly generated in the range of 0 to max 
+ * @param  {[num]} count [the number of members in the generanted array]
+ * @param  {[num]} max   [the max value of generented array]
+ * @return {[array]}       [a array with count menbers and they are in the range of 0 to max]
+ */
 function generaterandom(count,max){
 	var arr = [];
 	for(var i=0; i<count ; i++){
@@ -112,6 +189,8 @@ function generaterandom(count,max){
 	}
 	return arr;
 }
+
+//由于数组也是引用类型,copyArr函数用于克隆一个指定数组并返回克隆出来的新数组
 function copyArr(arr) {
 	var tempArr = [];
 	var n = arr.length;
@@ -121,21 +200,45 @@ function copyArr(arr) {
 	return tempArr;
 }
 
-var arr1 = generaterandom(50,100);
+//用于记录排序的时间
+function sortTime(sortMethod,arr,left,right){
+	var timeStart = new Date().getTime();
+	sortMethod(arr,left,right);
+	var timeStop = new Date().getTime();
+	var time = timeStop - timeStart;
+	return time;
+}
+
+var arr1 = generaterandom(10000,50000);
 var arr2 = copyArr(arr1);
 var arr3 = copyArr(arr1);
-var arr4 = [6,2,1,5,4,7,8,9];
+var arr4 = copyArr(arr1);
+var arr5 = copyArr(arr1);
+var arr6 = copyArr(arr1);
 
-bubbleSort(arr1);
-selectionSort(arr2);
-insertSort(arr3);
-quickSort(arr4,0,7);
+//测试各种排序方法需要的时间
+var time1 = sortTime(bubbleSort,arr1);
+var time2 = sortTime(selectionSort,arr2);
+var time3 = sortTime(insertSort,arr3);
+var time4 = sortTime(quickSort,arr4,0,9999);
+var time5 = sortTime(shellSort,arr5);
+var time6 = sortTime(mergeSort,arr6,0,9999);
+
+
+console.log(time1,time2,time3,time4,time5,time6);
+
 console.log(arr1);
 console.log(arr2);
-console.log(arr3);
-console.log(arr4);
+console.log(arr6);
 
+// var arr1 = [1,5,2,4,6,7,9,8,3,10]
+// mergeSort(arr1,0,9);
+// console.log(arr1);
 
+// var arr = generaterandom(10,100);
+// console.log(arr);
+// mergeSort(arr,0,9);
+// console.log(arr);
 
 
 
