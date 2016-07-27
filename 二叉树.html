@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+	<html lang = "en">
+	<head>
+	<meta charset = "UTF-8">
+	<title> Learn javascript </title> 
+	</head> 
+	<body>
+
+	<script type = "text/javascript">
+//定义二叉树
+function Node(data, left, right) {
+	this.data = data;
+	this.left = left;
+	this.right = right;
+	this.show = function() {
+		return this.data;	
+	}
+
+}
+
+//定义查找二叉树BST
+function BST() {
+	this.root = null;
+	this.insert = insert;
+	this.inOrder = inOrder;
+
+}
+
+//insert 方法
+function insert(data) {
+	var n = new Node(data, null, null);
+	if (this.root === null) {
+		this.root = n;
+	} else {
+		var current = this.root;
+		var parent = current;
+
+		while (1) {
+			if (data < current.data) {
+				parent = current;
+				current = current.left;
+				if (current === null) {
+					parent.left = n;
+					break;
+				}
+
+			} else {
+				parent = current;
+				current = current.right;
+				if (current === null) {
+					parent.right = n;
+					break;
+				}
+
+			}
+		}
+
+	}
+}
+
+//中序遍历
+function inOrder(n){ 	
+	if (n !== null) {
+		inOrder(n.left);
+		console.log(n.show() + " ");
+		inOrder(n.right);
+	}
+	
+}
+
+
+//查找最大值和最小值
+function getMin(){
+	var current = this.root;
+	while(current.left !== null) {
+		current = current.left;
+	}
+	return current.data;
+}
+
+function getMax(){
+	var current = this.root;
+	while(current.right !== null) {
+		current= current.right;
+	}
+	return current.data;
+}
+
+
+//查找特点节点
+function find(data) {
+	var current = this.root;
+	while (current !== null) {
+		if (data === current.data) {
+			return current;
+		}
+		if (data > current.data) {
+			current = current.right;
+		} else {
+			current = current.left;
+		}
+	}
+
+	return false;
+
+}
+
+
+
+//删除特定节点
+function removeData(node, value) {
+	if (node === null)
+		return null;
+	var current = node;
+	var parent;
+
+	while (current.data !== value) {
+		if (current.data > value) {
+			parent = current;
+			current = current.left;
+		} else {
+			parent = current;
+			current = current.right;
+		}
+	}
+
+	if (current.data === value) {
+		//左右子节点都没有
+		if (current.left === null && current.right === null) {
+			if (current === parent.left) {
+				parent.left = null;
+			} else {
+				parent.right = null;
+			}
+		}
+		//左节点为空
+		if (current.left === null) {
+			if (current === parent.left) {
+				parent.left = current.right;
+			} else {
+				parent.right = current.right;
+			}
+		}
+		//右节点为空
+		if (current.right === null) {
+			if (current === parent.left) {
+				parent.left = current.left;
+			} else {
+				parent.right = current.left;
+			}
+		}
+		//左右节点都有
+		if (current.right !== null && current.right !== null) {
+			//找到右子树中的最小值
+			var max = (function getMax(node) {
+				var current = node;
+				var parent = current;
+				while (current.right !== null) {
+					parent = current;
+					current = current.right;
+				}
+				return [current, parent];
+			})(current);
+
+			current.data = max[0].data;
+			max[1].right = null;
+
+		}
+	}
+
+
+
+}
+
+//返回BST中节点的数量
+var arr = [];
+function countBST(node){
+	var current = node;
+	if(current !== null) {
+		arr.push(node.data);
+		countBST(current.left);
+		countBST(current.right);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+var nums = new BST();
+nums.insert(20);
+nums.insert(15);
+nums.insert(25);
+nums.insert(29);
+nums.insert(13);
+nums.insert(11);
+
+var min = getMin.call(nums);
+console.log(min);
+console.log(getMax.call(nums));
+var target = find.call(nums,25);
+
+console.log(target);
+
+countBST(nums.root);
+var num = arr.length;
+console.log(num);
+
+
+
+
+</script>
+
+</body>
+</html>

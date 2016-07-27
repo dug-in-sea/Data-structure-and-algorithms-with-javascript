@@ -1,0 +1,147 @@
+<!-- 排序是个很常见的问题,基本的排序方法,按照时间复杂度来分,复杂度为n^2的主要有冒泡,选择,插入三种,复杂度为nlogn的主要有快排,希尔,归并,堆排序四种,这7种排序方法差不多就是最常见的排序方法了 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Sort</title>
+</head>
+<body>
+
+<script type="text/javascript">
+// 冒泡排序
+function bubbleSort(arr) {
+	var n = arr.length;
+	var i, j;
+	//外层循环,共需要进行n-1次,因为最后1次只剩下一个数,不用再排序
+	for (i = 0; i < n-1; i++) {   
+		//内部循环,每次从第1位开始,进行到n-i位,因为后面i位已经排好  
+		for (j = 0; j < n - i; j++) {
+			//把最大的排到最后面,像冒泡一样升到最顶
+			if (arr[j] > arr[j + 1]) {
+				var temp = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = temp;
+			}
+		}
+	}
+
+}
+
+
+
+
+
+//选择排序
+function selectionSort(arr) {
+	var n = arr.length;
+	var i,j;
+	for (i = 0; i < n; i++) {
+		var min = arr[i];
+		var index = i;
+		for (j = i + 1; j < n; j++) {
+			if (arr[j] < min) {
+				min = arr[j];
+				index = j
+			}
+		}
+		var temp = arr[i];
+		arr[i] = min;
+		arr[index] = temp;
+	}
+}
+
+
+//插入排序
+function insertSort(arr) {
+	var n = arr.length;
+	var i,j;
+	var target;
+	for(i=1;i<n;i++) {
+		j=i;
+		target = arr[i];
+		while( j>0 && target<arr[j-1]){
+			arr[j]=arr[j-1];
+			j--;
+		}
+		arr[j] = target;
+	}
+}
+
+
+//以上三种排序时间复杂度都是n^2,称为简单排序,下面的排序方法具有更高的效率,称为高级排序方法
+
+
+//快速排序
+function quickSort(arr,left,right) {
+	var n = arr.length;
+	var i = left;
+	var j = right;
+	var base = arr[left];
+
+	while(i<j) {
+		while (j>i && arr[j]>=base) 
+		   j--;
+		
+		while (i<j && arr[i]<=base) 
+			i++;
+		
+		if(i<j){
+			var temp = arr[i];
+			arr[i] = arr[j];
+			arr[j] =temp;
+		}
+
+	}
+	var temp2 = arr[i];
+	arr[i] = arr[left];
+	arr[left] = temp2;
+
+	 quickSort(arr,left,i-1);
+	quickSort(arr,i+1,right);
+}
+
+//用于调试
+function generaterandom(count,max){
+	var arr = [];
+	for(var i=0; i<count ; i++){
+		arr.push(Math.floor(Math.random()*max));
+	}
+	return arr;
+}
+function copyArr(arr) {
+	var tempArr = [];
+	var n = arr.length;
+	for(var i=0; i<n ;i++){
+		tempArr[i]=arr[i];
+	}
+	return tempArr;
+}
+
+var arr1 = generaterandom(50,100);
+var arr2 = copyArr(arr1);
+var arr3 = copyArr(arr1);
+var arr4 = [6,2,1,5,4,7,8,9];
+
+bubbleSort(arr1);
+selectionSort(arr2);
+insertSort(arr3);
+quickSort(arr4,0,7);
+console.log(arr1);
+console.log(arr2);
+console.log(arr3);
+console.log(arr4);
+
+
+
+
+
+
+</script>
+
+
+
+
+
+</body>
+</html>
